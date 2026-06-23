@@ -1,0 +1,9 @@
+artifacts/
+*.joblib
+*.pkl
+train.csv
+eval.csv
+v1.csv
+v2.csv
+.ipynb_checkpoints/
+__pycache__/
