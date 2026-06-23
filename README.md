@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 23F1001572_MLOPS_WEEKLY_ASSIGNMENT
 
 # MLOps Graded Assignment – Week 4
@@ -123,3 +124,7 @@ week_4
 ## Conclusion
 
 This assignment demonstrates how Continuous Integration can be integrated into an MLOps workflow. Automated testing ensures data quality and model performance are continuously validated, while GitHub Actions provides reproducible execution of the CI pipeline for every code change.
+=======
+# 23F1001572_MLOPS_WEEKELY_ASSIGNMENT
+## week_1 branch Created Assignment done 
+>>>>>>> f036891 (new)
