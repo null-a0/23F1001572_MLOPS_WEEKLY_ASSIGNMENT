@@ -1,4 +1,4 @@
-# 23F1001572_MLOPS_WEEKELY_ASSIGNMENT
+# 23F1001572_MLOPS_WEEKLY_ASSIGNMENT
 # IRIS Classification with DVC (Week 2 – MLOps Assignment)
 
 ## Project Overview
