@@ -1,17 +1,9 @@
-# Week 3 - Feature Store with Feast
+# MLOps Graded Assignment – Week 3
+
 
 ## Overview
 
-This project demonstrates how to use **Feast**, an open-source Feature Store, to manage machine learning features for both training and online inference.
-
-The IRIS dataset is used to build an end-to-end MLOps pipeline that includes:
-
-- Data preparation
-- Feature Store creation
-- Historical feature retrieval
-- Model training
-- Online feature serving
-- Real-time prediction
+This assignment demonstrates the integration of the **Feast Feature Store** into an existing Iris machine learning pipeline. The objective is to use Feast for both offline feature retrieval during training and online feature retrieval during inference, ensuring consistency between training and serving.
 
 ---
 
@@ -20,21 +12,100 @@ The IRIS dataset is used to build an end-to-end MLOps pipeline that includes:
 ```
 .
 ├── data/
-│   ├── iris.csv
-│   ├── iris_feast.csv
-│   └── iris_feast.parquet
+│   ├── iris_data_adapted_for_feast.csv
+│   └── iris_data_adapted_for_feast.parquet
 │
 ├── feature_repo/
+│   ├── README.md
 │   └── feature_repo/
 │       ├── feature_definitions.py
-│       └── feature_store.yaml
+│       ├── feature_store.yaml
+│       └── data/
+│           ├── registry.db
+│           └── online_store.db
 │
 ├── models/
 │   └── iris_model.pkl
 │
-├── week_3.ipynb
-├── train.py
-└── README.md
+├── week3.ipynb
+├── README.md
+└── .gitignore
+```
+
+---
+
+## Tasks Completed
+
+### ✅ Task 1 – Initialize Feast Feature Repository
+
+- Created a Feast Feature Repository.
+- Configured Feast with the Local Provider.
+- Configured SQLite as the Online Store.
+
+---
+
+### ✅ Task 2 – Define Entity, Data Source and Feature View
+
+Defined:
+
+- **Entity:** `iris`
+- **Entity Key:** `iris_id`
+- **Data Source:** Time-aware Iris Dataset
+- **Feature View:** `iris_features`
+
+Features stored:
+
+- sepal_length
+- sepal_width
+- petal_length
+- petal_width
+
+---
+
+### ✅ Task 3 – Apply Definitions and Materialize Features
+
+Successfully executed:
+
+```bash
+feast apply
+```
+
+and
+
+```bash
+feast materialize 2025-09-01T00:00:00 2025-12-31T00:00:00
+```
+
+to register feature definitions and populate the online store.
+
+---
+
+### ✅ Task 4 – Offline Feature Retrieval & Model Training
+
+- Retrieved historical features using the Feast Offline Store.
+- Built the training dataset using Feast instead of directly reading the feature columns.
+- Trained a Random Forest classifier.
+- Saved the trained model as:
+
+```
+models/iris_model.pkl
+```
+
+---
+
+### ✅ Task 5 – Online Feature Retrieval & Inference
+
+Retrieved real-time features from the Feast Online Store using `iris_id` and performed inference with the trained model.
+
+The prediction obtained using Feast matched the prediction obtained using the raw dataset, demonstrating consistency between training and serving.
+
+Example output:
+
+```
+Prediction using Feast : setosa
+Prediction using Raw Data : setosa
+
+Predictions are consistent.
 ```
 
 ---
@@ -44,91 +115,23 @@ The IRIS dataset is used to build an end-to-end MLOps pipeline that includes:
 - Python
 - Feast 0.64
 - Pandas
-- PyArrow
 - Scikit-learn
-- DVC
-- Git & GitHub
+- SQLite
+- PyArrow
+- Jupyter Notebook
 
 ---
 
-## Workflow
+## Repository
 
-1. Load the IRIS dataset.
-2. Prepare the dataset for Feast.
-3. Save the dataset as CSV and Parquet.
-4. Create a Feast Feature Repository.
-5. Register Feature Views using `feast apply`.
-6. Materialize features into the online store.
-7. Retrieve historical features for model training.
-8. Train a Random Forest classifier.
-9. Save the trained model.
-10. Retrieve online features from Feast.
-11. Perform real-time prediction.
-
----
-
-## Model Performance
-
-| Metric | Value |
-|---------|-------|
-| Model | Random Forest Classifier |
-| Accuracy | **100%** |
-
----
-
-## Running the Project
-
-### Apply Feast Configuration
-
-```bash
-cd feature_repo/feature_repo
-feast apply
-```
-
-### Materialize Features
-
-```bash
-feast materialize 2026-07-01T00:00:00 2026-12-31T00:00:00
-```
-
-### Run the Notebook
-
-Open:
+Branch used for this assignment:
 
 ```
-week_3.ipynb
-```
-
-and execute all cells sequentially.
-
----
-
-## Sample Output
-
-```
-Model Accuracy: 1.0000
-
-Predicted Species: setosa
+week_3
 ```
 
 ---
 
-## Learning Outcomes
+## Conclusion
 
-This project demonstrates:
-
-- Feature Store concepts
-- Offline and Online Feature Stores
-- Historical Feature Retrieval
-- Online Feature Retrieval
-- Training-Serving Consistency
-- End-to-End MLOps Workflow using Feast
-
----
-
-## Author
-
-**Abhishek Saha**
-
-BS in Data Science and Applications  
-Indian Institute of Technology Madras
+This project demonstrates the complete workflow of integrating a Feature Store into a machine learning pipeline. Feast was successfully used for feature management, offline training, and online inference, ensuring consistent feature access across different stages of the ML lifecycle.
