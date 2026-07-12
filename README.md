@@ -1,9 +1,10 @@
-# MLOps Graded Assignment – Week 3
+# 23F1001572_MLOPS_WEEKLY_ASSIGNMENT
 
+# MLOps Graded Assignment – Week 4
 
 ## Overview
 
-This assignment demonstrates the integration of the **Feast Feature Store** into an existing Iris machine learning pipeline. The objective is to use Feast for both offline feature retrieval during training and online feature retrieval during inference, ensuring consistency between training and serving.
+This assignment extends the Iris MLOps pipeline by integrating **Continuous Integration (CI)** using **GitHub Actions**. The pipeline automatically validates data quality, evaluates the trained model, and executes tests on every push and pull request. DVC configuration is included for version-controlled data and model management, providing the foundation for reproducible machine learning workflows.
 
 ---
 
@@ -11,127 +12,114 @@ This assignment demonstrates the integration of the **Feast Feature Store** into
 
 ```
 .
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── .dvc/
 ├── data/
-│   ├── iris_data_adapted_for_feast.csv
-│   └── iris_data_adapted_for_feast.parquet
-│
+│   └── iris_data_adapted_for_feast.csv
 ├── feature_repo/
-│   ├── README.md
-│   └── feature_repo/
-│       ├── feature_definitions.py
-│       ├── feature_store.yaml
-│       └── data/
-│           ├── registry.db
-│           └── online_store.db
-│
 ├── models/
 │   └── iris_model.pkl
-│
+├── tests/
+│   ├── test_data.py
+│   └── test_model.py
+├── requirements.txt
 ├── week3.ipynb
-├── README.md
-└── .gitignore
+└── README.md
 ```
 
 ---
 
 ## Tasks Completed
 
-### ✅ Task 1 – Initialize Feast Feature Repository
+### ✅ Task 1 – Data Validation Tests
 
-- Created a Feast Feature Repository.
-- Configured Feast with the Local Provider.
-- Configured SQLite as the Online Store.
+Implemented automated data validation using **pytest**.
 
----
+Validation checks include:
 
-### ✅ Task 2 – Define Entity, Data Source and Feature View
-
-Defined:
-
-- **Entity:** `iris`
-- **Entity Key:** `iris_id`
-- **Data Source:** Time-aware Iris Dataset
-- **Feature View:** `iris_features`
-
-Features stored:
-
-- sepal_length
-- sepal_width
-- petal_length
-- petal_width
+- Dataset availability
+- Expected schema
+- Missing values
+- Feature data types
+- Valid feature value ranges
+- Valid target classes
 
 ---
 
-### ✅ Task 3 – Apply Definitions and Materialize Features
+### ✅ Task 2 – Model Evaluation Tests
 
-Successfully executed:
+Implemented automated model evaluation tests.
 
-```bash
-feast apply
-```
+The workflow:
 
-and
-
-```bash
-feast materialize 2025-09-01T00:00:00 2025-12-31T00:00:00
-```
-
-to register feature definitions and populate the online store.
+- Loads the trained Random Forest model
+- Performs inference on the evaluation dataset
+- Computes evaluation metrics
+- Verifies that model quality meets the required threshold
 
 ---
 
-### ✅ Task 4 – Offline Feature Retrieval & Model Training
+### ✅ Task 3 – GitHub Actions CI Pipeline
 
-- Retrieved historical features using the Feast Offline Store.
-- Built the training dataset using Feast instead of directly reading the feature columns.
-- Trained a Random Forest classifier.
-- Saved the trained model as:
+Configured GitHub Actions to automatically:
 
-```
-models/iris_model.pkl
-```
+- Checkout repository
+- Setup Python
+- Install project dependencies
+- Execute automated test suite
 
 ---
 
-### ✅ Task 5 – Online Feature Retrieval & Inference
+### ✅ Task 4 – Continuous Integration
 
-Retrieved real-time features from the Feast Online Store using `iris_id` and performed inference with the trained model.
+Configured workflow triggers for:
 
-The prediction obtained using Feast matched the prediction obtained using the raw dataset, demonstrating consistency between training and serving.
+- Push
+- Pull Request
+- Manual execution (`workflow_dispatch`)
 
-Example output:
+This ensures every code change is automatically validated before merging.
 
-```
-Prediction using Feast : setosa
-Prediction using Raw Data : setosa
+---
 
-Predictions are consistent.
-```
+### ✅ Task 5 – Continuous Machine Learning (CML)
+
+Integrated CML into the GitHub Actions workflow to generate automated CI reports and publish test results on Pull Requests.
+
+---
+
+### ✅ Task 6 – Pull Request Workflow
+
+Created a Pull Request from the **week_4** branch into **main**.
+
+GitHub Actions automatically executed the CI pipeline before merge, ensuring only validated code is merged.
 
 ---
 
 ## Technologies Used
 
 - Python
-- Feast 0.64
-- Pandas
+- Git
+- GitHub Actions
+- Pytest
+- DVC
+- Feast
 - Scikit-learn
-- SQLite
-- PyArrow
-- Jupyter Notebook
+- Pandas
+- Joblib
 
 ---
 
-## Repository
-
-Branch used for this assignment:
+## Branch
 
 ```
-week_3
+week_4
 ```
 
 ---
 
 ## Conclusion
 
-This project demonstrates the complete workflow of integrating a Feature Store into a machine learning pipeline. Feast was successfully used for feature management, offline training, and online inference, ensuring consistent feature access across different stages of the ML lifecycle.
+This assignment demonstrates how Continuous Integration can be integrated into an MLOps workflow. Automated testing ensures data quality and model performance are continuously validated, while GitHub Actions provides reproducible execution of the CI pipeline for every code change.
