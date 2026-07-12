@@ -127,4 +127,8 @@ This assignment demonstrates how Continuous Integration can be integrated into a
 =======
 # 23F1001572_MLOPS_WEEKELY_ASSIGNMENT
 ## week_1 branch Created Assignment done 
+<<<<<<< HEAD
 >>>>>>> f036891 (new)
+=======
+## week_2 branch Created Assignment done 
+>>>>>>> d4c783e (updateed)
