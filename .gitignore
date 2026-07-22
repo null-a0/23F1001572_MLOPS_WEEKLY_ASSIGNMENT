@@ -25,3 +25,4 @@ venv/
 # OS files
 .DS_Store
 mlflow.db
+feature_repo/feature_repo/data/*.db
