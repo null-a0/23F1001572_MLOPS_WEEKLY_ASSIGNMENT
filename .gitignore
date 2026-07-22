@@ -1,40 +1,28 @@
-# -------------------------
 # Python
-# -------------------------
 __pycache__/
-*.py[cod]
+*.pyc
 
-# -------------------------
-# Jupyter Notebook
-# -------------------------
+# Jupyter
 .ipynb_checkpoints/
 
-# -------------------------
-# Virtual Environments
-# -------------------------
-.venv/
+# MLflow
+mlruns/
+mlartifacts/
+
+# DVC
+.dvc/cache/
+
+# Virtual environments
 venv/
-env/
-ENV/
+.env
 
-# -------------------------
-# Operating System
-# -------------------------
+# Model files
+*.pkl
+*.joblib
+*.pt
+*.pth
+
+# OS files
 .DS_Store
-Thumbs.db
-
-# -------------------------
-# IDEs
-# -------------------------
-.vscode/
-.idea/
-
-# -------------------------
-# Feast
-# -------------------------
-feature_repo/feature_repo/.ipynb_checkpoints/
-
-# -------------------------
-# Logs
-# -------------------------
-*.log
+mlflow.db
+feature_repo/feature_repo/data/*.db
