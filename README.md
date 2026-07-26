@@ -1,4 +1,3 @@
----
 # Week 6 - Deploying an Iris Classification API on Google Kubernetes Engine (GKE)
 
 ## Assignment Tasks
