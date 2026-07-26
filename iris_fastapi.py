@@ -23,8 +23,15 @@ def read_root():
 
 @app.post("/predict/")
 def predict_species(data: IrisInput):
-    input_df = pd.DataFrame([data.dict()])
+    input_df = pd.DataFrame([{
+        "sepal length (cm)": data.sepal_length,
+        "sepal width (cm)": data.sepal_width,
+        "petal length (cm)": data.petal_length,
+        "petal width (cm)": data.petal_width,
+    }])
+
     prediction = model.predict(input_df)[0]
+
     return {
-        "predicted_class": prediction
+        "predicted_class": int(prediction)
     }
