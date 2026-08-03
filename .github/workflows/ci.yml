@@ -34,6 +34,11 @@ jobs:
 
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
+        with:
+          install_components: gke-gcloud-auth-plugin
+
+      - name: Enable GKE Auth Plugin
+        run: echo "USE_GKE_GCLOUD_AUTH_PLUGIN=True" >> $GITHUB_ENV
 
       - name: Configure Docker Authentication
         run: |
@@ -42,27 +47,27 @@ jobs:
       - name: Get GKE Credentials
         run: |
           gcloud container clusters get-credentials \
-          $CLUSTER_NAME \
-          --zone $CLUSTER_ZONE
+            $CLUSTER_NAME \
+            --zone $CLUSTER_ZONE
 
       - name: Build Docker Image
         run: |
           docker build \
-          -t us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:${{ github.sha }} .
+            -t us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:${{ github.sha }} .
 
       - name: Push Docker Image
         run: |
           docker push \
-          us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:${{ github.sha }}
+            us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:${{ github.sha }}
 
       - name: Update Kubernetes Deployment
         run: |
           kubectl set image deployment/demo-log-ml-service \
-          fastapi-container=us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:${{ github.sha }}
+            fastapi-container=us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:${{ github.sha }}
 
       - name: Wait for Rollout
         run: |
-          kubectl rollout status deployment/demo-log-ml-service
+          kubectl rollout status deployment/demo-log-ml-service --timeout=180s
 
       - name: Install wrk
         run: |
@@ -76,8 +81,8 @@ jobs:
       - name: Stress Test
         run: |
           wrk -t4 -c1000 -d30s --latency \
-          -s post.lua \
-          http://${{ secrets.LOAD_BALANCER_IP }}/predict
+            -s post.lua \
+            http://${{ secrets.LOAD_BALANCER_IP }}/predict
 
       - name: Show HPA
         run: |
