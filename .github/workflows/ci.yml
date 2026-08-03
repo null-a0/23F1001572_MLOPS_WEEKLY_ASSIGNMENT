@@ -1,39 +1,87 @@
-name: MLOps CI Pipeline
+name: Week 7 CI/CD + Stress Test
 
 on:
   push:
-  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
   contents: read
-  pull-requests: write
+  id-token: write
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  CLUSTER_NAME: ${{ secrets.GKE_CLUSTER }}
+  CLUSTER_ZONE: ${{ secrets.GKE_ZONE }}
+  IMAGE_NAME: demo-log
+  REPOSITORY: week6-repo
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          python-version: "3.12"
+          workload_identity_provider: projects/938959281806/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+          service_account: github-actions@project-0a6400db-0297-4323-a8f.iam.gserviceaccount.com
 
-      - name: Install Dependencies
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker Authentication
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
-      # Authentication step for GCP will be added later
-      # after we configure GitHub Secrets.
-
-      - name: Pull DVC Artifacts
+      - name: Get GKE Credentials
         run: |
-          dvc pull
+          gcloud container clusters get-credentials \
+          $CLUSTER_NAME \
+          --zone $CLUSTER_ZONE
 
-      - name: Run Pytest
+      - name: Build Docker Image
         run: |
-          pytest -v
+          docker build \
+          -t us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:${{ github.sha }} .
+
+      - name: Push Docker Image
+        run: |
+          docker push \
+          us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:${{ github.sha }}
+
+      - name: Update Kubernetes Deployment
+        run: |
+          kubectl set image deployment/demo-log-ml-service \
+          fastapi-container=us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME:${{ github.sha }}
+
+      - name: Wait for Rollout
+        run: |
+          kubectl rollout status deployment/demo-log-ml-service
+
+      - name: Install wrk
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wrk
+
+      - name: Wait for LoadBalancer
+        run: |
+          sleep 20
+
+      - name: Stress Test
+        run: |
+          wrk -t4 -c1000 -d30s --latency \
+          -s post.lua \
+          http://${{ secrets.LOAD_BALANCER_IP }}/predict
+
+      - name: Show HPA
+        run: |
+          kubectl get hpa
+
+      - name: Show Pods
+        run: |
+          kubectl get pods -o wide
