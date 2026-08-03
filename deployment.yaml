@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-log-ml-service
+
+spec:
+  replicas: 1
+
+  strategy:
+    type: Recreate
+
+  selector:
+    matchLabels:
+      app: demo-log-ml-service
+
+  template:
+    metadata:
+      labels:
+        app: demo-log-ml-service
+
+    spec:
+      serviceAccountName: telemetry-access
+
+      containers:
+      - name: fastapi-container
+        image: us-central1-docker.pkg.dev/project-0a6400db-0297-4323-a8f/week6-repo/demo-log:v3
+
+        ports:
+        - containerPort: 8200
+
+        readinessProbe:
+          httpGet:
+            path: /ready_check
+            port: 8200
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+        livenessProbe:
+          httpGet:
+            path: /live_check
+            port: 8200
+          initialDelaySeconds: 15
+          periodSeconds: 20
+
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"

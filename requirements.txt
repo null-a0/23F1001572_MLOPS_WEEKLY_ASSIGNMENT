@@ -1,8 +1,6 @@
-pandas
-numpy
-scikit-learn
-joblib
-pytest
-dvc[gs]
-feast
-google-cloud-storage
+fastapi
+uvicorn[standard]
+pydantic
+
+# Exporter for Google Cloud
+opentelemetry-exporter-gcp-trace
