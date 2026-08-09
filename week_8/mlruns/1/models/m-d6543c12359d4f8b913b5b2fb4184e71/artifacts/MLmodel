@@ -1,4 +1,4 @@
-artifact_path: /home/jupyter/23F1001572_MLOPS_WEEKLY_ASSIGNMENT/week_8/mlruns/1/models/m-70f5c98405d24a47aa42423fa6417a85/artifacts
+artifact_path: /home/jupyter/23F1001572_MLOPS_WEEKLY_ASSIGNMENT/week_8/mlruns/1/models/m-d6543c12359d4f8b913b5b2fb4184e71/artifacts
 flavors:
   python_function:
     env:
@@ -15,9 +15,9 @@ flavors:
     sklearn_version: 1.9.0
     skops_trusted_types: null
 mlflow_version: 3.14.0
-model_id: m-70f5c98405d24a47aa42423fa6417a85
-model_size_bytes: 2171871
-model_uuid: m-70f5c98405d24a47aa42423fa6417a85
+model_id: m-d6543c12359d4f8b913b5b2fb4184e71
+model_size_bytes: 1858747
+model_uuid: m-d6543c12359d4f8b913b5b2fb4184e71
 prompts: null
-run_id: e8fb20a35fbc4027842626d73d2c2eb9
-utc_time_created: '2026-08-09 19:20:44.500220'
+run_id: ed915fc763e342f5854189fce8758cc6
+utc_time_created: '2026-08-09 20:05:38.716505'
