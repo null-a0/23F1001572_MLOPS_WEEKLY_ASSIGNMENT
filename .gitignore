@@ -7,3 +7,5 @@ github-actions-key.json
 venv/
 __pycache__/
 *.pyc
+week_8/mlruns/
+week_8/mlflow.db
