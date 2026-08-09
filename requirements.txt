@@ -1,8 +1,5 @@
-pandas
 numpy
+pandas
 scikit-learn
-joblib
-pytest
-dvc[gs]
-feast
-google-cloud-storage
+mlflow
+matplotlib
