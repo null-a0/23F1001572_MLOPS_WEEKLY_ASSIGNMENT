@@ -1,4 +1,4 @@
-```
+
 # Week 9 — Explainability, Fairness, and Drift in the IRIS Pipeline
 
 ## Overview
@@ -283,5 +283,3 @@ The completed pipeline combines:
 
 Together, these practices provide a foundation for building more trustworthy and responsible machine learning systems.
 
-```
-```
