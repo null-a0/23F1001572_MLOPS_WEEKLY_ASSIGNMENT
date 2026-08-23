@@ -1,125 +1,53 @@
-# 23F1001572_MLOPS_WEEKLY_ASSIGNMENT
+# Week 10 — From MLOps to LLMOps: Fine-Tuning Gemini on the IRIS Pipeline
 
-# MLOps Graded Assignment – Week 4
-
-## Overview
-
-This assignment extends the Iris MLOps pipeline by integrating **Continuous Integration (CI)** using **GitHub Actions**. The pipeline automatically validates data quality, evaluates the trained model, and executes tests on every push and pull request. DVC configuration is included for version-controlled data and model management, providing the foundation for reproducible machine learning workflows.
-
----
-
-## Project Structure
-
-```
-.
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-├── .dvc/
-├── data/
-│   └── iris_data_adapted_for_feast.csv
-├── feature_repo/
-├── models/
-│   └── iris_model.pkl
-├── tests/
-│   ├── test_data.py
-│   └── test_model.py
-├── requirements.txt
-├── week3.ipynb
-└── README.md
-```
+**Course:** MLOps  
+**Platform:** Google Cloud Platform (GCP)  
+**Model Platform:** Vertex AI  
+**Task:** Supervised Fine-Tuning and Evaluation of Gemini  
+**Dataset:** IRIS Classification  
+**Branch:** `week_10`
 
 ---
 
-## Tasks Completed
+# 1. Assignment Overview
 
-### ✅ Task 1 – Data Validation Tests
+This project implements **Week 10 — From MLOps to LLMOps: Fine-Tuning Gemini on the IRIS Pipeline**.
 
-Implemented automated data validation using **pytest**.
+The objective is to apply LLMOps principles using **Google Cloud Platform (GCP), Google Cloud Storage (GCS), and Vertex AI**.
 
-Validation checks include:
+The experiment compares two representations of the same IRIS dataset:
 
-- Dataset availability
-- Expected schema
-- Missing values
-- Feature data types
-- Valid feature value ranges
-- Valid target classes
+- **V1 — Raw Feature Representation:** IRIS measurements provided directly as text.
+- **V2 — Natural Language Representation:** The same measurements expressed as natural-language descriptions.
 
----
+Both datasets are used to fine-tune Gemini models with the same training configuration. The resulting models are evaluated on held-out test data using accuracy, per-class precision and recall, and format compliance.
 
-### ✅ Task 2 – Model Evaluation Tests
+The project demonstrates how **data representation, supervised fine-tuning, model versioning, and LLM-specific evaluation** fit into an LLMOps workflow.
 
-Implemented automated model evaluation tests.
+# 2. Learning Objectives
 
-The workflow:
+- Understand the transition from **MLOps to LLMOps**.
+- Convert structured IRIS data into **LLM-compatible JSONL datasets**.
+- Create and compare **raw-feature and natural-language representations**.
+- Perform **supervised Gemini fine-tuning using Vertex AI**.
+- Evaluate fine-tuned models using **accuracy, precision, and recall**.
+- Measure **LLM output-format compliance**.
+- Compare model versions and analyze the impact of data representation.
+- Understand the role of **versioning, evaluation, and CI/CD** in LLMOps.
 
-- Loads the trained Random Forest model
-- Performs inference on the evaluation dataset
-- Computes evaluation metrics
-- Verifies that model quality meets the required threshold
+## 3. Assignment Tasks
 
----
+### Task 1 — V1 Raw Feature Format
+Completed. Created and uploaded the raw-feature JSONL dataset to GCS.
 
-### ✅ Task 3 – GitHub Actions CI Pipeline
+### Task 2 — V2 Natural Language Format
+Completed. Created and uploaded the natural-language JSONL dataset to GCS.
 
-Configured GitHub Actions to automatically:
+### Task 3 — Gemini Fine-Tuning
+Completed. Successfully fine-tuned two Gemini model versions using the V1 and V2 datasets.
 
-- Checkout repository
-- Setup Python
-- Install project dependencies
-- Execute automated test suite
+### Task 4 — Evaluation & Comparison
+Completed. Evaluated both models using accuracy, per-class precision/recall, and format compliance.
 
----
-
-### ✅ Task 4 – Continuous Integration
-
-Configured workflow triggers for:
-
-- Push
-- Pull Request
-- Manual execution (`workflow_dispatch`)
-
-This ensures every code change is automatically validated before merging.
-
----
-
-### ✅ Task 5 – Continuous Machine Learning (CML)
-
-Integrated CML into the GitHub Actions workflow to generate automated CI reports and publish test results on Pull Requests.
-
----
-
-### ✅ Task 6 – Pull Request Workflow
-
-Created a Pull Request from the **week_4** branch into **main**.
-
-GitHub Actions automatically executed the CI pipeline before merge, ensuring only validated code is merged.
-
----
-
-## Technologies Used
-
-- Python
-- Git
-- GitHub Actions
-- Pytest
-- DVC
-- Feast
-- Scikit-learn
-- Pandas
-- Joblib
-
----
-
-## Branch
-
-```
-week_4
-```
-
----
-
-## Conclusion
-
-This assignment demonstrates how Continuous Integration can be integrated into an MLOps workflow. Automated testing ensures data quality and model performance are continuously validated, while GitHub Actions provides reproducible execution of the CI pipeline for every code change.
+### Task 5 — Automated Evaluation in CI
+**Optional.** Not implemented, as this is an optional extension of the assignment.
