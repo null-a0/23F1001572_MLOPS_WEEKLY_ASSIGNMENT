@@ -1,0 +1,44 @@
+name: LLMOps Model Evaluation
+
+on:
+  push:
+    branches:
+      - week_10
+  pull_request:
+    branches:
+      - week_10
+
+jobs:
+  evaluate-models:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-genai google-cloud-storage scikit-learn
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "projects/938959281806/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+          service_account: "github-actions@project-0a6400db-0297-4323-a8f.iam.gserviceaccount.com"
+
+      - name: Run LLM evaluation
+        env:
+          GOOGLE_CLOUD_PROJECT: project-0a6400db-0297-4323-a8f
+          GOOGLE_CLOUD_LOCATION: us-central1
+        run: |
+          python evaluate_models.py
